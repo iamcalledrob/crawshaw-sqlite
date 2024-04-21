@@ -52,9 +52,9 @@ package sqlite
 //	return sqlite3_bind_blob(stmt, col, p, n, SQLITE_TRANSIENT);
 // }
 //
-// extern void log_fn(void* pArg, int code, char* msg);
+// extern void c_log_fn(void*, int, char*);
 // static void enable_logging() {
-//	sqlite3_config(SQLITE_CONFIG_LOG, log_fn, NULL);
+//	sqlite3_config(SQLITE_CONFIG_LOG, c_log_fn, NULL);
 // }
 //
 // static int db_config_onoff(sqlite3* db, int op, int onoff) {
@@ -169,7 +169,6 @@ func openConn(path string, flags ...OpenFlags) (*Conn, error) {
 			return nil, err
 		}
 	}
-
 
 	return conn, nil
 }
@@ -611,7 +610,7 @@ func (stmt *Stmt) ClearBindings() error {
 //
 // https://www.sqlite.org/c3ref/step.html
 //
-// Shared cache
+// # Shared cache
 //
 // As the sqlite package enables shared cache mode by default
 // and multiple writers are common in multi-threaded programs,
@@ -987,11 +986,11 @@ func (stmt *Stmt) columnBytes(col int) []byte {
 
 // ColumnType are codes for each of the SQLite fundamental datatypes:
 //
-//   64-bit signed integer
-//   64-bit IEEE floating point number
-//   string
-//   BLOB
-//   NULL
+//	64-bit signed integer
+//	64-bit IEEE floating point number
+//	string
+//	BLOB
+//	NULL
 //
 // https://www.sqlite.org/c3ref/c_blob.html
 type ColumnType int
@@ -1024,11 +1023,11 @@ func (t ColumnType) String() string {
 // ColumnType returns the datatype code for the initial data
 // type of the result column. The returned value is one of:
 //
-//   SQLITE_INTEGER
-//   SQLITE_FLOAT
-//   SQLITE_TEXT
-//   SQLITE_BLOB
-//   SQLITE_NULL
+//	SQLITE_INTEGER
+//	SQLITE_FLOAT
+//	SQLITE_TEXT
+//	SQLITE_BLOB
+//	SQLITE_NULL
 //
 // Column indices start at 0.
 //
@@ -1224,8 +1223,8 @@ func sqliteInitFn() {
 	}
 }
 
-//export log_fn
-func log_fn(_ unsafe.Pointer, code C.int, msg *C.char) {
+//export go_log_fn
+func go_log_fn(_ unsafe.Pointer, code C.int, msg *C.char) {
 	var msgBytes []byte
 	if msg != nil {
 		str := C.GoString(msg) // TODO: do not copy msg.

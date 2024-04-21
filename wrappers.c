@@ -47,3 +47,12 @@ void c_destroy_tramp(void* ptr) {
         return go_destroy_tramp((uintptr_t)ptr);
 }
 
+extern int go_sqlite_auth_tramp(uintptr_t, int, char*, char*, char*, char*);
+int c_auth_tramp(void *userData, int action, const char* arg1, const char* arg2, const char* db, const char* trigger) {
+        return go_sqlite_auth_tramp((uintptr_t)userData, action, (char*)arg1, (char*)arg2, (char*)db, (char*)trigger);
+}
+
+extern void go_log_fn(void*, int, char*);
+void c_log_fn(void* pArg, int code, char* msg) {
+        return go_log_fn(pArg, code, msg);
+}
