@@ -42,6 +42,21 @@ int c_xapply_filter_tramp(void* pCtx, const char* zTab) {
         return go_xapply_filter_tramp((uintptr_t)pCtx, (char*)zTab);
 }
 
+extern void go_func_tramp(sqlite3_context*, int, sqlite3_value**);
+void c_func_tramp(sqlite3_context* ctx, int n, sqlite3_value** valarray) {
+        return go_func_tramp(ctx, n, valarray);
+}
+
+extern void go_step_tramp(sqlite3_context*, int, sqlite3_value**);
+void c_step_tramp(sqlite3_context* ctx, int n, sqlite3_value** valarray) {
+        return go_step_tramp(ctx, n, valarray);
+}
+
+extern void go_final_tramp(sqlite3_context*);
+void c_final_tramp(sqlite3_context* ctx) {
+        return go_final_tramp(ctx);
+}
+
 extern void go_destroy_tramp(uintptr_t);
 void c_destroy_tramp(void* ptr) {
         return go_destroy_tramp((uintptr_t)ptr);

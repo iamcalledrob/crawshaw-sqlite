@@ -2,8 +2,8 @@ package sqlite
 
 // #include <stdint.h>
 // #include <sqlite3.h>
+// #include "wrappers.h"
 //
-// extern int c_auth_tramp(void*, int, const char*, const char*, const char*, const char*);
 // static int sqlite3_go_set_authorizer(sqlite3* conn, uintptr_t id) {
 //   return sqlite3_set_authorizer(conn, c_auth_tramp, (void*)id);
 // }

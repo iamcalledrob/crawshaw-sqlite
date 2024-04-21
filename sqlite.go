@@ -52,7 +52,6 @@ package sqlite
 //	return sqlite3_bind_blob(stmt, col, p, n, SQLITE_TRANSIENT);
 // }
 //
-// extern void c_log_fn(void*, int, char*);
 // static void enable_logging() {
 //	sqlite3_config(SQLITE_CONFIG_LOG, c_log_fn, NULL);
 // }
